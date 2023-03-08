@@ -1,0 +1,201 @@
+---
+title: "Assignment 3"
+author: "Mohammed Rahman"
+date: "2023-03-06"
+output: html_document
+---
+
+<!-- https://rpubs.com/mrcuny/manipulation-of-strings -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1
+
+Task: Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset
+[https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that
+identifies the majors that contain either "DATA" or "STATISTICS"
+
+----
+
+### Solution
+
+Load the libraries to use:
+
+```{r message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(stringr)
+```
+
+
+Read in the data:
+
+```{r message=FALSE, warning=FALSE}
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/majors-list.csv"
+majors <- read_csv(url)
+
+# Look at the first 10 rows:
+head(majors, 10)
+```
+
+Identify the majors that contain either "DATA" or "STATISTICS":
+
+```{r}
+data_stats <- majors %>%
+  filter(str_detect(Major, "DATA|STATISTICS"))
+
+data_stats
+```
+
+If we need the majors as a vector we can do:
+
+```{r}
+data_stats$Major
+```
+
+## Task 2
+
+Task: Write code that transforms the data below:
+
+[1] "bell pepper" "bilberry" "blackberry" "blood orange"
+[5] "blueberry" "cantaloupe" "chili pepper" "cloudberry"
+[9] "elderberry" "lime" "lychee" "mulberry"
+[13] "olive" "salal berry"
+
+Into a format like this:
+
+c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry",
+"cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee",
+"mulberry", "olive", "salal berry")
+
+----
+
+### Solution
+
+```{r}
+# original string
+x <- '
+[1] "bell pepper" "bilberry" "blackberry" "blood orange"
+[5] "blueberry" "cantaloupe" "chili pepper" "cloudberry"
+[9] "elderberry" "lime" "lychee" "mulberry"
+[13] "olive" "salal berry"
+'
+
+# split the input string into lines and remove the first line
+x_clean <- strsplit(x, "\n")[[1]][-1] %>%
+  # remove all digits and the square brackets in each line
+  # replace the space between two double quotes with a comma and a space
+  str_remove_all(pattern = "[0-9]") %>%
+  str_remove_all(pattern = "\\[\\] ") %>%
+  str_replace_all(pattern = '" "', replacement = '", "') %>%
+  # join all cleaned lines together into one string separated by commas
+  paste0(collapse = ", ")
+
+# enclose the cleaned string in "c()" and print it to the console
+x_clean <- paste0("c(", x_clean, ")")
+cat(x_clean)
+```
+
+## Task 3
+
+Task: Describe, in words, what these expressions will match:
+
+- (.)\1\1
+- "(.)(.)\\2\\1"
+- (..)\1
+- "(.).\\1.\\1"
+- "(.)(.)(.).*\\3\\2\\1"
+
+----
+
+### Solution
+
+1. (.)\1\1
+
+The regular expression (.)\1\1 will match any sequence of three consecutive identical characters. 
+
+For example:
+
+- "aaa"
+- "bbb"
+- "111"
+- "+++"
+
+2. "(.)(.)\\2\\1"
+
+The regular expression "(.)(.)\\2\\1" will match any string surrounded by double quotes that consists of two pairs of identical characters in reverse order. 
+
+For example:
+
+- "abba"
+- "123321"
+- "xyyx"
+- "&&00&&"
+
+3. (..)\1
+
+The regular expression (..)\1 will match any string that contains a sequence of two consecutive identical two-character substrings. 
+
+For example:
+- "hello"
+- "goodbye"
+- "apple"
+- "banana"
+
+4. "(.).\\1.\\1"
+
+The regular expression "(.).\\1.\\1" will match any string that has a character followed by any character, the original character, any other character, the original character again.
+
+For example:
+
+- "abaca"
+- "b8b.b"
+
+5. "(.)(.)(.).*\\3\\2\\1"
+
+The regular expression "(.)(.)(.).*\\3\\2\\1" will match any string surrounded by double quotes that starts with three characters, where the third character is repeated later in the string, followed by any number of additional characters, and then ends with the three characters in reverse order. 
+
+For example:
+
+- "abcdecba"
+- "1234d4321"
+- "xyzyzx"
+- "&&&qwerty&&&"
+
+## Task 4
+
+Task: Construct regular expressions to match words that:
+
+- Start and end with the same character.
+- Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+- Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+
+----
+
+### Solution
+
+1. To match words that start and end with the same character, we can use:
+
+```
+^(.).*\1$
+```
+
+This regex matches any string that starts with a single character, followed by any number of characters (including none), and then ends with the same character that it started with.
+
+2. To match words that contain a repeated pair of letters, we can use:
+
+```
+.*(.{2}).*\1.*
+```
+
+This regex matches any string that contains at least two consecutive characters (captured by .{2}), followed by any number of characters (including none), and then the same two characters that were captured earlier (using \1).
+
+3. To match words that contain one letter repeated in at least three places, we can use:
+
+```
+.*(.).*\1.*\1.*
+```
+
+This regex matches any string that contains at least one character (captured by .), followed by any number of characters (including none), and then the same character that was captured earlier (using \1), repeated at least two more times. The .* before and after each instance of \1 allow any number of characters to appear between each repetition of the captured character.
