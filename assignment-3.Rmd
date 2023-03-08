@@ -7,14 +7,18 @@ output: html_document
 
 <!-- https://rpubs.com/mrcuny/manipulation-of-strings -->
 
+[GitHub Link to Rmd file](https://github.com/mrcuny/assignment-3/blob/main/assignment-3.Rmd)
+
+----
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Task 1
 
-Task: Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset
-[https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that
+Task: Using the 173 majors listed in fivethirtyeight.com’s 
+[College Majors dataset](https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/), provide code that
 identifies the majors that contain either "DATA" or "STATISTICS"
 
 ----

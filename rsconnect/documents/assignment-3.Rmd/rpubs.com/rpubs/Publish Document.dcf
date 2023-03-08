@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/1011900/e9908d1b9d1748cea69ac9fc4d80629f
+bundleId: https://api.rpubs.com/api/v1/document/1011900/e9908d1b9d1748cea69ac9fc4d80629f
+url: http://rpubs.com/mrcuny/1011900
+when: 1678241341.96947
+lastSyncTime: 1678241341.96948
